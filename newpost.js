@@ -7,8 +7,7 @@ let posts =[];
 
 console.log(sections)
 
-
-
+//GIT COMMIT COMENTARIOS 1
 
 const init = () => {
 
@@ -95,17 +94,17 @@ const  boton=(e)=>{
    post.imagen = inputs[0].value
    post.header = inputs[1].value
    post.body = inputs [3].value
-   
+   //post.id = posts.length
     // inputs.forEach((input) => {
       //  post[input.name] = input.value;
    // });
-   // post.id = posts.length
+   
     //agrega objeto a arreglo de posts
     console.log (post)
     posts.push(post);
    
 
-    //METODO FETCH
+    //METODO FETCH PARA SUBIR NUEVOS POST A FIREBASE
    
     fetch(urlDB,{
     method:'POST',
@@ -120,21 +119,7 @@ const  boton=(e)=>{
     
      mostrarhome()
     renderizarposts()
-  /*
-  
-    
 
- 
-
-    fetch  (url,{
-        method:'POST',
-        body: JSON.stringify(newPost),
-        headers :{
-            "Content-type": "application/json"
-        }
-    }).then(respuesta =>respuesta.json())
-    .catch((error)=>console.log(error))
-    .then(respuesta => console.log('Success:',respuesta)) */
 }
 
 
@@ -157,17 +142,18 @@ const eliminarpost =(id)=>{
 const renderizarposts = () => {
 
     //ELIMINA RENDERIZACIONES PREVIAS
-    const postendiv = tarjetas.children
-   
-    if (postendiv.length > 0){
-    const  postcards = Array.from(postendiv)
+    const postendiv = tarjetas.children     //collecion html 
+    
+    if (postendiv.length > 0){              //si es mayor a 1
+    const  postcards = Array.from(postendiv) // coloca en array los htmllements
      
-    postcards.forEach((postcard)=>{
-           tarjetas.removeChild(postcard)
+    postcards.forEach((postcard)=>{  
+           tarjetas.removeChild(postcard)   //los pasa array para poder borrarlos 
        })
        console.log(tarjetas)
     }
 
+    
 //MANDA A LLAMAR LA FUNCION CREAR CARD    
     posts.forEach((post) => {
         const card = cardPost(post);
@@ -176,7 +162,6 @@ const renderizarposts = () => {
 }
 
 
-//MUESTRA UN POST 
 const muestrainfoPost=(nid)=>{
     muestrapost()
     renderizarunpost()
