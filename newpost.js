@@ -1,4 +1,4 @@
-const urlDB ='https://devto-78ce5-default-rtdb.firebaseio.com/';
+const urlDB ='https://proyect1-ddc6c-default-rtdb.firebaseio.com/favoritos.json';
 const sectionsNode = document.querySelectorAll('section');
 const sections = Array.from(sectionsNode);
 const tarjetas  = document.getElementById('tarjetas')
@@ -88,20 +88,53 @@ const  boton=(e)=>{
     const inputsNode = e.target.querySelectorAll('input');
     //html list lo pasa a array
     const inputs = Array.from(inputsNode);
+    
     //crea objeto post
     let post = {};
     //Agrega a el objeto propiedades y valores. 
-    inputs.forEach((input) => {
-        post[input.name] = input.value;
-    });
-    post.id = posts.length
+   post.imagen = inputs[0].value
+   post.header = inputs[1].value
+   post.body = inputs [3].value
+   
+    // inputs.forEach((input) => {
+      //  post[input.name] = input.value;
+   // });
+   // post.id = posts.length
     //agrega objeto a arreglo de posts
+    console.log (post)
     posts.push(post);
-    mostrarhome()
+   
+
+    //METODO FETCH
+   
+    fetch(urlDB,{
+    method:'POST',
+    body:JSON.stringify(post),
+    headers:{
+        "Content-type": "application/json"
+    }
+    
+    })
+    .then(respuesta =>respuesta.json())
+    .catch((error)=>console.log(error))
+    
+     mostrarhome()
     renderizarposts()
-    console.log (posts)  
-    //console.log(post)
-    //guardarfire()
+  /*
+  
+    
+
+ 
+
+    fetch  (url,{
+        method:'POST',
+        body: JSON.stringify(newPost),
+        headers :{
+            "Content-type": "application/json"
+        }
+    }).then(respuesta =>respuesta.json())
+    .catch((error)=>console.log(error))
+    .then(respuesta => console.log('Success:',respuesta)) */
 }
 
 
