@@ -8,6 +8,7 @@ let posts =[];
 console.log(sections)
 
 //GIT COMMIT COMENTARIOS 1
+//GIT COMMIT COMENTARIOS 2
 
 const init = () => {
 
