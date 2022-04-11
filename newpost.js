@@ -13,20 +13,16 @@ const init = () => {
 
     //MUESTRA LA SECCION DE REGISTRO
     sections.forEach((section) => {
-        // if (section.id != 'todosLosHeroes') {
-        //     section.style.display = 'none';
-        // }
 
-        //alertaGuardar.style.display = 'none';
-        if (section.id != 'newpost') {
+        if (section.id != 'home') {
             section.style.display = 'none';
         }
 
 
     });
 }
-
-//MUESTRA LA SECCION DE TODOS LOS HEROES
+init()
+//MUESTRA LA SECCION DE TODOS LOS POSTS
 const mostrarhome = () => {
     sections.forEach((section) => {
         if (section.id === 'home') {
