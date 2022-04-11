@@ -7,8 +7,7 @@ let posts =[];
 
 console.log(sections)
 
-//GIT COMMIT COMENTARIOS 1
-//GIT COMMIT COMENTARIOS 2
+
 
 const init = () => {
 
@@ -154,14 +153,21 @@ const renderizarposts = () => {
        console.log(tarjetas)
     }
 
-    
-//MANDA A LLAMAR LA FUNCION CREAR CARD    
-    posts.forEach((post) => {
+    fetch(urlDB)
+    .then(response => response.json())
+    .then(response =>{
+   
+  
+    listaposts = Object.values(response) // como se obtiene un objeto de objetos se obtiene un array de objetos
+  
+    //MANDA A LLAMAR LA FUNCION CREAR CARD    
+    listaposts.forEach((post) => {
         const card = cardPost(post);
         tarjetas.insertAdjacentHTML('afterbegin', card);
     });
+      }) 
 }
-
+renderizarposts()
 
 const muestrainfoPost=(nid)=>{
     muestrapost()
