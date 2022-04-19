@@ -1,4 +1,5 @@
 const urlDB ='https://proyect1-ddc6c-default-rtdb.firebaseio.com/favoritos.json';
+const urlDB1 ='https://proyect1-ddc6c-default-rtdb.firebaseio.com/favoritos/';
 const sectionsNode = document.querySelectorAll('section');
 const sections = Array.from(sectionsNode);
 const tarjetas  = document.getElementById('tarjetas')
@@ -23,7 +24,7 @@ const init = () => {
 }
 init()
 //MUESTRA LA SECCION DE TODOS LOS POSTS
-const mostrarhome = () => {
+const mostrarhome = (num) => {
     sections.forEach((section) => {
         if (section.id === 'home') {
             section.style.display = '';
@@ -50,7 +51,7 @@ const mostrarRegistrar = () => {
 }
 
 //MUESTRA LA SECCION DE POST 
-const muestrapost = () => {
+const muestrapost = (key) => {
     sections.forEach((section) => {
         if (section.id === 'post') {
             section.style.display = '';
@@ -58,11 +59,11 @@ const muestrapost = () => {
             section.style.display = 'none';
         }
     });
-   
+    renderizaunpost (key)
 }
 
 
-const editarPost =(nid)=>{
+const editarPost =()=>{
     sections.forEach((section) => {
         if (section.id === 'edit') {
             section.style.display = '';
@@ -70,7 +71,7 @@ const editarPost =(nid)=>{
             section.style.display = 'none';
         }
     });
-editar(nid)
+    
 }
 
 
@@ -90,7 +91,7 @@ const  boton=(e)=>{
    post.imagen = inputs[0].value
    post.header = inputs[1].value
    post.body = inputs [3].value
-   //post.id = posts.length
+   post.id = posts.length
     // inputs.forEach((input) => {
       //  post[input.name] = input.value;
    // });
@@ -123,7 +124,6 @@ const  boton=(e)=>{
 
 
 //FUNCION ELIMINA POST
-
 const eliminarpost =(id)=>{
     posts = posts.filter((post)=>{
         return post.id != id
@@ -153,9 +153,10 @@ const renderizarposts = () => {
     .then(response => response.json())
     .then(response =>{
    
-  
+    
     listaposts = Object.values(response) // como se obtiene un objeto de objetos se obtiene un array de objetos
-  
+    
+   
     //MANDA A LLAMAR LA FUNCION CREAR CARD    
     listaposts.forEach((post) => {
         const card = cardPost(post);
@@ -163,30 +164,59 @@ const renderizarposts = () => {
     });
       }) 
 }
-renderizarposts()
+//renderizarposts()
 
-const muestrainfoPost=(nid)=>{
-    muestrapost()
-    renderizarunpost()
+
+const obtienepostconid =()=>{
+    fetch(urlDB)
+    .then(response => response.json())
+    .then(response =>{
+    const postsconid  = Object.keys(response).map(id=>{
+    const idpost = response[id]
     
+    return {
+        clave: id,
+        body: idpost.body,
+        header:idpost.header,
+        imagen:idpost.imagen,
+    }
+    })
+    console.log(postsconid)
+//MANDA A LLAMAR LA FUNCION CREAR CARD    
+    postsconid.forEach((postid) => {
+    const card = cardPost(postid);
+    tarjetas.insertAdjacentHTML('afterbegin', card);
+    });
+    
+    
+}).catch((error)=>console.log(error))
 
 }
+obtienepostconid()
+
+
 
     //RENDERIZAR UN SOLO POST 
-    const renderizarunpost =()=>{
-    const postcreados = unpost.children
-    if (postcreados.length>0){
-        const postcreados2 =Array.from(postcreados)
+const renderizaunpost =(key)=>{
+    const urlpost = `${urlDB1}${key}.json`
+      
+    //ELIMINA POST PREVIOS SI LOS HAY    
+    const postcreados = unpost.children 
+    if (postcreados.length>0){   //cuenta los post
+    const postcreados2 =Array.from(postcreados)
     postcreados2.forEach((poster)=>{
-        tarjetas.removeChild(postcard)
+    unpost.removeChild(poster)
     })
-}
+    }
 
-    //MANDA A LLAMAR LA FUNCION CREAR CARD    
-    posts.forEach((post) => {
-        const card = cardPost(post);
-        tarjetas.insertAdjacentHTML('afterbegin', card);
-    })
+    fetch(urlpost)
+    .then(response => response.json())
+    .then(postresponse =>{
+    console.log(postresponse)
+    const card = CardOnlyPost(postresponse);
+    unpost.insertAdjacentHTML('afterbegin', card);
+
+    }).catch((error)=>console.log(error))
 }
 
 
@@ -229,7 +259,7 @@ const cardPost = (post) => {
         
         <div id="" class="textCard" >
             
-            <a class="subTitleCard " href="#" onclick ="muestrainfoPost(${post.id})">
+            <a class="subTitleCard " href="#" onclick ="muestrapost('${post.clave}')"   >
                <h2 class ="header ml-2 mx-2"   > ${post.header}</h2>
             </a> 
             <div class="crayons-story__indention">               
@@ -269,4 +299,14 @@ const cardPost = (post) => {
     </div>
     <br>`;
     return card;
+}
+
+
+const CardOnlyPost = (post)=>{
+const card = `<div class="card">
+<div class="card-header"><img src="${post.imagen}" alt="Imagen" ></div>
+<div class="card-body">${post.header}</div>
+<div class="card-footer">${post.body}</div>
+</div>`;
+return card;
 }
