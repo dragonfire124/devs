@@ -17,3 +17,16 @@ const guardarfire = (articuloId, titulo, descripcion, funcion) => {
     .then((body) => funcion(body))
     .catch((error) => console.log(error));
 }
+
+const getUsers = () => {
+    const url = "http://localhost:8000/"
+    fetch (url,{
+        method: 'GET',
+               headers: {
+            'Content-Type':'application.json'
+        }
+    }).then((respuesta) => respuesta.json())
+
+    console.log (respuesta)
+}
+

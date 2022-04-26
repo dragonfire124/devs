@@ -134,7 +134,8 @@ const eliminarpost =(id)=>{
 
 
 
-///FUNCION RENDERIZA LOS POSTS
+///FUNCION RENDERIZA LOS POSTS   YA NO SE USA (SE USA OBTENERPOSTCONID)
+/*
 const renderizarposts = () => {
 
     //ELIMINA RENDERIZACIONES PREVIAS
@@ -165,7 +166,7 @@ const renderizarposts = () => {
       }) 
 }
 //renderizarposts()
-
+*/
 
 const obtienepostconid =()=>{
     fetch(urlDB)
@@ -194,6 +195,32 @@ const obtienepostconid =()=>{
 }
 obtienepostconid()
 
+//ESTA FUNCION BUSCA Y RENDERIZA POST BUSCADOS EN BUSCADOR
+const busquedapost =(e)=>{
+    fetch(urlDB)
+    .then(response => response.json())
+    .then(response =>{
+    const postsconid  = Object.keys(response).map(id=>{
+    const idpost = response[id]
+    
+    return {
+        clave: id,
+        body: idpost.body,
+        header:idpost.header,
+        imagen:idpost.imagen,
+    }
+    })
+    
+//MANDA A LLAMAR LA FUNCION CREAR CARD    
+    postsconid.forEach((postid) => {
+    const card = cardPost(postid);
+    tarjetas.insertAdjacentHTML('afterbegin', card);
+    });
+    
+    
+}).catch((error)=>console.log(error))
+
+}
 
 
     //RENDERIZAR UN SOLO POST 
