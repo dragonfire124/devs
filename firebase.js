@@ -1,6 +1,5 @@
+/*
 const urlDB ='https://peliculas-app-56aec-default-rtdb.firebaseio.com/';
-
-
 const publicPost = document.querySelector('#publicar');
 publicPost.addEventListener('click', () => {guardarPost});
 
@@ -17,16 +16,13 @@ const guardarfire = (articuloId, titulo, descripcion, funcion) => {
     .then((body) => funcion(body))
     .catch((error) => console.log(error));
 }
-
+*/
 const getUsers = () => {
-    const url = "http://localhost:8000/"
-    fetch (url,{
-        method: 'GET',
-               headers: {
-            'Content-Type':'application.json'
-        }
-    }).then((respuesta) => respuesta.json())
-
-    console.log (respuesta)
-}
-
+    console.log("hola mundo ")
+    
+    const url = "http://localhost:8000/users"
+    fetch(url)
+    .then(response => response.json())
+    .then((response)=>{console.log(response)})
+    .catch((error)=>console.log(error))
+    }

@@ -1,6 +1,7 @@
 const express = require("express");
 const user = require("../usecases/user");
 const { authHandler } = require("../middlewares/authHandlers");
+const { update } = require("../usecases/posts");
 
 const router = express.Router();
 
@@ -33,9 +34,9 @@ router.get("/:id", async (req, res, next) => {
 
 router.post("/", async (req, res, next) => {
   try {
-    const { name,imagenusuario,password } = req.body;
+    const { name,imagenusuario,password,email } = req.body;
 
-    const userCreated = await user.create(name,imagenusuario,password);
+    const userCreated = await user.create(name,imagenusuario,password,emai);
 
     res.json({
       success: true,
@@ -48,10 +49,18 @@ router.post("/", async (req, res, next) => {
 });
 
 
-router.put("/:id", (req, res) => {
+router.put("/:id", async(req, res,next) => {
+  try {
     const { id } = req.params;
-    const { name } = req.body;
-    res.json({ message: `Usuario ${id} actualizado` + name });
+    const userUpdate  = await user.update(id,req.body)
+    
+    res.json({     
+      success: true,
+      message: "User actualizado",
+      payload: userUpdate});
+  }catch (error) {
+    next(error);
+  }
 });
 
 module.exports = router;

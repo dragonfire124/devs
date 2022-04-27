@@ -1,3 +1,5 @@
+const post = require("../../modules/post");
+
 const Post = require ("../../modules/post").model;
 
 
@@ -9,29 +11,37 @@ const getAll = async () => {
     return await Post.findById(id).exec();
   };
   
-  const create = async (id, imagenpost,imagenusuario,name,date, header,tags) => {
-    const post  = new Post({id, imagenpost,imagenusuario,name,date, header,tags });
-  
+  const create = async (imagenpost,imagenusuario,name,date, header,tags,createdby) => {
+    const post  = await new Post({imagenpost,imagenusuario,name,date, header,tags,createdby});
+   
     return await post.save();
   };
   
-  const update = async (id, imagenpost,imagenusuario,name,date, header,tags) => {
-    const post = await Post.findById(id).exec();
-  
-    
-    post.imagenpost = imagenpost;
-    post.imagenusuario = imagenusuario;
-    post.name = name;
-    post.date = date;
-    post.header= header;
-    post.tags = tags
+  const update = async (id, data) => {
+    const postfound = await Post.findById(id)
 
-    return await post.save();
+    if(postfound.createdby==reqId) {
+      
+    const post = await Post.findByIdAndUpdate(id, data)
+    return  post
+    }
+    else{
+      return null
+    }   
   };
   
-  const del = async (id) => {
+  const del = async (id,reqId) => {
+  const postfound = await Post.findById(id)
+
+  if(postfound.createdby==reqId) {
     return await Post.findByIdAndDelete(id).exec();
+  }
+  else{
+    return null
+  }
+    
   };
 
-  
+ 
+
 module.exports = { getAll, getById, create, update, del };

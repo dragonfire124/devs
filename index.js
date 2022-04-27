@@ -6,7 +6,7 @@ const config = require("./src/lib/config");
 const app = express();
 const port = config.app.port;
 const cors = require("cors");
-//const { use } = require("./src/routes/user");
+const { use } = require("./src/routes/user");
 app.use(express.json());
 apiRouter(app);
 app.use(logErrors);

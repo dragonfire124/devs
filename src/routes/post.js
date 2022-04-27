@@ -1,5 +1,6 @@
 const express = require("express");     
 const post = require("../usecases/posts");
+const { authHandler } = require("../middlewares/authHandlers");
 const router = express.Router();
 
 router.get("/", async (req, res, next) => {
@@ -27,11 +28,14 @@ router.get("/:id", async (req, res, next) => {
   }
 });
 
-router.post("/", async (req, res, next) => {
+router.post("/", authHandler, async (req, res, next) => {
   try {
-    const { id, imagenpost,imagenusuario,name,date, header,tags } = req.body;
+    
+    const { tokenPayload } = req.params
+    
+    const { imagenpost,imagenusuario,name,date, header,tags,createdby} = req.body;
 
-    const createdPost = await post.create(id, imagenpost,imagenusuario,name,date, header,tags);
+    const createdPost = await post.create( imagenpost,imagenusuario,name,date, header,tags,createdby);
 
     res.json({
       success: true,
@@ -43,28 +47,50 @@ router.post("/", async (req, res, next) => {
   }
 });
 
-router.put("/:id", async (req, res, next) => {
+router.put("/:id", authHandler,  async (req, res, next) => {
   try {
     const { id } = req.params;
-    const {imagenpost,imagenusuario,name,date, header,tags } = req.body;
 
-    const updatedPost = await post.update(id, imagenpost,imagenusuario,name,date, header,tags);
+    const updatedPost = await post.update(id, req.body);
+    
+    if(updatedPost==null){
 
+      res.json({
+        success: false,
+        message: " No tiene permiso para actualizar el post ",
+        
+      });
+      return
+
+    }
+    
     res.json({
       success: true,
       message: "Post actualizada",
-      payload: updatedCategory,
+      payload: updatedPost,
     });
   } catch (error) {
     next(error);
   }
 });
 
-router.delete("/:id", async (req, res, next) => {
+router.delete("/:id", authHandler,  async (req, res, next) => {
   try {
+    const reqId = req.body.user._id
+    
     const { id } = req.params;
 
-    const deletedPost = await post.del(id);
+    const deletedPost = await post.del(id, reqId);
+    
+    if (deletedPost==null){
+
+    res.json({
+      success: false,
+      message: " No tiene permiso para borrar el post ",
+      
+    });
+    return
+    }
 
     res.json({
       success: true,
