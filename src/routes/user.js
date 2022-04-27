@@ -36,7 +36,7 @@ router.post("/", async (req, res, next) => {
   try {
     const { name,imagenusuario,password,email } = req.body;
 
-    const userCreated = await user.create(name,imagenusuario,password,emai);
+    const userCreated = await user.create(name,imagenusuario,password,email);
 
     res.json({
       success: true,

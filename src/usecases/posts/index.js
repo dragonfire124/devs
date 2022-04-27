@@ -17,14 +17,17 @@ const getAll = async () => {
     return await post.save();
   };
   
-  const update = async (id, data) => {
+  const update = async (id, data,userId) => {
     const postfound = await Post.findById(id)
 
-    if(postfound.createdby==reqId) {
+    
+
+    if(postfound.createdby==userId) {
       
     const post = await Post.findByIdAndUpdate(id, data)
     return  post
     }
+
     else{
       return null
     }   

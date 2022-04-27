@@ -49,10 +49,12 @@ router.post("/", authHandler, async (req, res, next) => {
 
 router.put("/:id", authHandler,  async (req, res, next) => {
   try {
-    const { id } = req.params;
-
-    const updatedPost = await post.update(id, req.body);
     
+    const { id } = req.params;
+    const { tokenPayload } = req.params
+    console.log(tokenPayload.sub)
+    const updatedPost = await post.update(id, req.body, tokenPayload.sub);
+    console.log(updatedPost)
     if(updatedPost==null){
 
       res.json({
@@ -76,6 +78,7 @@ router.put("/:id", authHandler,  async (req, res, next) => {
 
 router.delete("/:id", authHandler,  async (req, res, next) => {
   try {
+    console.log(req)
     const reqId = req.body.user._id
     
     const { id } = req.params;
