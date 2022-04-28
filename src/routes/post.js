@@ -33,9 +33,12 @@ router.post("/", authHandler, async (req, res, next) => {
     
     const { tokenPayload } = req.params
     
-    const { imagenpost,imagenusuario,name,date, header,tags,createdby} = req.body;
-
-    const createdPost = await post.create( imagenpost,imagenusuario,name,date, header,tags,createdby);
+    
+    const userTokenId = tokenPayload.sub
+    const { imagenpost,imagenusuario,name,date, header,tags} = req.body;
+    
+    
+    const createdPost = await post.create( imagenpost,imagenusuario,name,date, header,tags,userTokenId);
 
     res.json({
       success: true,
