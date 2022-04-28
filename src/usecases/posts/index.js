@@ -34,13 +34,23 @@ const getAll = async () => {
   };
   
   const del = async (id,reqId) => {
+
   const postfound = await Post.findById(id)
 
-  if(postfound.createdby==reqId) {
+ 
+
+ 
+  
+  if(parseInt( reqId) == parseInt(postfound.createdby)) {
+   
     return await Post.findByIdAndDelete(id).exec();
   }
   else{
-    return null
+    
+    const res= postfound.createdby===reqId
+    
+    return {null: res}
+
   }
     
   };

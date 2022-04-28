@@ -81,11 +81,13 @@ router.put("/:id", authHandler,  async (req, res, next) => {
 
 router.delete("/:id", authHandler,  async (req, res, next) => {
   try {
-    console.log(req)
-    const reqId = req.body.user._id
     
-    const { id } = req.params;
 
+    const reqId = req.body.user._id
+
+    console.log (reqId )
+    const { id } = req.params;
+    
     const deletedPost = await post.del(id, reqId);
     
     if (deletedPost==null){
